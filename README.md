@@ -328,3 +328,58 @@ toggleOrder() {
 ---
 
 ##### 6. When no one wins, display a message about the result being a draw.
+
+* This is straightforward and built upon our existing code. Here is the expected output:
+
+  ![alt text](task6.png "Output for task 6")
+
+* Since we are calling the `calculateWinner` function in the `render` function of the `Game` class, it's the ideal place to check for a draw.
+* Note that we return `['draw', null]` as an array so as to have it working with the previous tasks with minimal modifications.
+```javascript
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for(let i=0; i<lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if( squares[a] && squares[a]===squares[b] && squares[a]===squares[c] )
+      return [ squares[a], a, b, c ];
+  }
+
+  for(let i=0; i<9; i++) {        <--
+    if( squares[i] === null)      <--
+        return null;              <--
+  }                               <--
+
+  return ['draw', null];          <--
+}
+```
+
+* Next and the final step is to modify the `render` function of the `Game` class. Here, we simply set the `status` according to the return information from `calculateWinner` function.
+```javascript
+  render() {
+    .
+    .
+    .
+    let status;
+    if (winner) {
+      if(winner === 'draw')
+          status = 'Match resulted in a draw';
+      else
+          status = 'Winner: ' + winner;
+    }
+    else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O') ;
+    }
+    .
+    .
+    .
+```

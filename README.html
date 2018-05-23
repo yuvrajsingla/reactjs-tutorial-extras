@@ -1340,4 +1340,61 @@ body .markdown-body
 </li>
 </ul>
 <hr />
-<h5 id="6-when-no-one-wins-display-a-message-about-the-result-being-a-draw"><a name="user-content-6-when-no-one-wins-display-a-message-about-the-result-being-a-draw" href="#6-when-no-one-wins-display-a-message-about-the-result-being-a-draw" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>6. When no one wins, display a message about the result being a draw.</h5></article></body></html>
+<h5 id="6-when-no-one-wins-display-a-message-about-the-result-being-a-draw"><a name="user-content-6-when-no-one-wins-display-a-message-about-the-result-being-a-draw" href="#6-when-no-one-wins-display-a-message-about-the-result-being-a-draw" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>6. When no one wins, display a message about the result being a draw.</h5>
+<ul>
+<li>This is straightforward and built upon our existing code. Here is the expected output:</li>
+</ul>
+<p><img alt="alt text" src="/Users/yuvraj/Projects/react_tut/my-app/task6.png" title="Output for task 6" /></p>
+<ul>
+<li>Since we are calling the <code>calculateWinner</code> function in the <code>render</code> function of the <code>Game</code> class, it&rsquo;s the ideal place to check for a draw.</li>
+<li>
+<p>Note that we return <code>['draw', null]</code> as an array so as to have it working with the previous tasks with minimal modifications.<br />
+<pre><code class="javascript">function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for(let i=0; i&lt;lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if( squares[a] &amp;&amp; squares[a]===squares[b] &amp;&amp; squares[a]===squares[c] )
+      return [ squares[a], a, b, c ];
+  }
+
+  for(let i=0; i&lt;9; i++) {        &lt;--
+    if( squares[i] === null)      &lt;--
+        return null;              &lt;--
+  }                               &lt;--
+
+  return ['draw', null];          &lt;--
+}
+</code></pre></p>
+</li>
+<li>
+<p>Next and the final step is to modify the <code>render</code> function of the <code>Game</code> class. Here, we simply set the <code>status</code> according to the return information from <code>calculateWinner</code> function.<br />
+<pre><code class="javascript">  render() {
+    .
+    .
+    .
+    let status;
+    if (winner) {
+      if(winner === 'draw')
+          status = 'Match resulted in a draw';
+      else
+          status = 'Winner: ' + winner;
+    }
+    else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O') ;
+    }
+    .
+    .
+    .
+</code></pre></p>
+</li>
+</ul></article></body></html>
