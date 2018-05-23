@@ -52,3 +52,8 @@ ol, ul {
 .bold {
   font-weight: bold;
 }
+
+.highlighted {
+  font-weight: bold;
+  color: red;
+}

@@ -214,10 +214,113 @@ render() {
 
   ```javascript
   toggleOrder() {
-    this.setState({ movesAsc: !this.state.movesAsc,
-                  });
+    this.setState({ movesAsc: !this.state.movesAsc, });
   }
 ```
 
 ##### 5. When someone wins, highlight the three squares that caused the win.
+
+* For this, the idea is to have the information of the winning cells and passing down that information to where the squares are rendered. Here, if the index of the square is one of the winning cells, we add a new CSS class to its button. Here's the expected output:
+
+  ![alt text](task5.png "Output for task 5")
+
+* We first add a new class `highlighted` to the index.css file
+  ```CSS
+.highlighted {
+  font-weight: bold;
+  color: red;
+}
+```
+
+* Next, we update the `calculateWinner()` function to return the indices of the three squares that cause the win when someone wins.
+
+  ```javascript
+  function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for(let i=0; i<lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if( squares[a] && squares[a]===squares[b] && squares[a]===squares[c] )
+      return [ squares[a], a, b, c ];       <--
+  }
+
+  return null;
+}
+```
+
+* We now modify the `render` function of the `Game` class to pass the WinnerCells information down to the `Board` class.
+
+  ```javascript
+  render() {
+
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const winnerInfo = calculateWinner(current.squares);                <--
+    const winner = winnerInfo ? winnerInfo[0] : winnerInfo;             <--
+    const winnerCells = winnerInfo ? winnerInfo.slice(1) : winnerInfo;  <--
+    .
+    .
+    .
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board
+            squares={current.squares}
+            winnerCells={winnerCells}                                   <--
+            onClick={ (i) => this.handleClick(i) }
+          />
+        </div>
+        <div className="game-info">
+          <div>{status}</div>
+          <div>{toggleButton}</div>
+          <ol>{moves}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+  ```
+
+* We are now in the `renderSquare` function of the `Board` class. Here, we use the `winnerCells` property to decide whether to append the `highlighted` class to a particular square or not.
+* We pass this information down to the `Square` function through the `extraClass` property.
+
+  ```javascript
+  class Board extends React.Component {
+
+    renderSquare(i) {
+      let extraClassName = 'square';                                            <--
+      if (this.props.winnerCells && this.props.winnerCells.indexOf(i) > -1 )    <--
+          extraClassName = 'square highlighted';                                <--
+
+      return (<Square
+                key = {'sq_'+i}
+                extraClass = {extraClassName}                                   <--
+                value = {this.props.squares[i]}
+                onClick = { () => this.props.onClick(i) }
+              />);
+    }
+  ```
+
+  * Lastly, we use this `extraClass` property inside the `Square` function inside the className property.
+
+  ```javascript
+
+  function Square(props) {
+    return (
+      <button className={props.extraClass} onClick={props.onClick}>     <--
+        { props.value }
+      </button>
+    );
+  }
+  ```
+
 ##### 6. When no one wins, display a message about the result being a draw.

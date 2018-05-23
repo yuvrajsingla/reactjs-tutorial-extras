@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button className={props.extraClass} onClick={props.onClick}>
       { props.value }
     </button>
   );
@@ -13,9 +13,16 @@ function Square(props) {
 class Board extends React.Component {
 
   renderSquare(i) {
+    let extraClassName = 'square';
+    if (this.props.winnerCells && this.props.winnerCells.indexOf(i) > -1 )
+        extraClassName = 'square highlighted';
+
     return (<Square
-              value={this.props.squares[i]}
-              onClick={ () => this.props.onClick(i) }
+              key = {'sq_'+i}
+              check = {this.props.winnerCells}
+              extraClass = {extraClassName}
+              value = {this.props.squares[i]}
+              onClick = { () => this.props.onClick(i) }
             />);
   }
 
@@ -27,7 +34,7 @@ class Board extends React.Component {
       for (var col_n = 0; col_n < 3; col_n++) {
         rowSquares.push( this.renderSquare(row_n*3+col_n) );
       }
-      allSquares.push(<div className="board-row">{rowSquares}</div>);
+      allSquares.push(<div key={'row_'+row_n} className="board-row">{rowSquares}</div>);
     }
 
     return (
@@ -82,12 +89,14 @@ class Game extends React.Component {
 
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winnerInfo = calculateWinner(current.squares);
+    const winner = winnerInfo ? winnerInfo[0] : winnerInfo;
+    const winnerCells = winnerInfo ? winnerInfo.slice(1) : winnerInfo;
 
     let moves = history.map( (step,move) => {
         const desc = move ? 'Go to move #' + move + ' : ' + (step.picked%3+1) + ',' +  (Math.floor(step.picked/3)+1)
                           : 'Go to game start' ;
-        const formatClass = (move == this.state.stepNumber ? 'bold' : '');
+        const formatClass = (move === this.state.stepNumber ? 'bold' : '');
         return (
           <li key={move}>
             <button className={formatClass} onClick={ () => this.jumpTo(move, this.key) }>{desc}</button>
@@ -114,6 +123,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
+            winnerCells={winnerCells}
             onClick={ (i) => this.handleClick(i) }
           />
         </div>
@@ -150,7 +160,7 @@ function calculateWinner(squares) {
   for(let i=0; i<lines.length; i++) {
     const [a, b, c] = lines[i];
     if( squares[a] && squares[a]===squares[b] && squares[a]===squares[c] )
-      return squares[a];
+      return [ squares[a], a, b, c ];
   }
 
   return null;
