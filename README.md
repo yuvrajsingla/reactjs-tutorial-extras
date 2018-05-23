@@ -69,6 +69,7 @@ Each commit corresponds to each task in order so that anyone can easily diff the
       ...
   ```
 
+---
 
 ##### 2. Bold the currently selected item in the move list.
 * We achieve this by simply toggling between a empty CSS class and a custom styled CSS class whenever a move is clicked.
@@ -102,6 +103,8 @@ render() {
   });
 ```
 
+---
+
 ##### 3.  Rewrite Board to use two loops to make the squares instead of hardcoding them.
 
 * To make the squares dynamically, we first create individual squares for each row and store them in an array.
@@ -128,6 +131,7 @@ render() {
 }
 ```
 
+---
 
 ##### 4. Add a toggle button that lets you sort the moves in either ascending or descending order.
 
@@ -211,12 +215,13 @@ render() {
 ```
 
 * Next, we define the `onToggle()` funciton which simply updates the current state by toggling the boolean `movesAsc`.
-
   ```javascript
   toggleOrder() {
     this.setState({ movesAsc: !this.state.movesAsc, });
   }
 ```
+
+---
 
 ##### 5. When someone wins, highlight the three squares that caused the win.
 
@@ -233,7 +238,6 @@ render() {
 ```
 
 * Next, we update the `calculateWinner()` function to return the indices of the three squares that cause the win when someone wins.
-
   ```javascript
   function calculateWinner(squares) {
   const lines = [
@@ -258,7 +262,6 @@ render() {
 ```
 
 * We now modify the `render` function of the `Game` class to pass the WinnerCells information down to the `Board` class.
-
   ```javascript
   render() {
 
@@ -292,7 +295,6 @@ render() {
 
 * We are now in the `renderSquare` function of the `Board` class. Here, we use the `winnerCells` property to decide whether to append the `highlighted` class to a particular square or not.
 * We pass this information down to the `Square` function through the `extraClass` property.
-
   ```javascript
   class Board extends React.Component {
 
@@ -308,10 +310,9 @@ render() {
                 onClick = { () => this.props.onClick(i) }
               />);
     }
-  ```
+```
 
-  * Lastly, we use this `extraClass` property inside the `Square` function inside the className property.
-
+* Lastly, we use this `extraClass` property inside the `Square` function inside the className property.
   ```javascript
 
   function Square(props) {
@@ -321,6 +322,8 @@ render() {
       </button>
     );
   }
-  ```
+```
+
+---
 
 ##### 6. When no one wins, display a message about the result being a draw.
