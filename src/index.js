@@ -86,9 +86,10 @@ class Game extends React.Component {
     const moves = history.map( (step,move) => {
         const desc = move ? 'Go to move #' + move + ' : ' + (step.picked%3+1) + ',' +  (Math.floor(step.picked/3)+1)
                           : 'Go to game start' ;
+        const formatClass = (move == this.state.stepNumber ? 'bold' : '');
         return (
           <li key={move}>
-            <button onClick={ () => this.jumpTo(move, this.key) }>{desc}</button>
+            <button className={formatClass} onClick={ () => this.jumpTo(move, this.key) }>{desc}</button>
           </li>
         );
     });

@@ -71,8 +71,36 @@ Each commit corresponds to each task in order so that anyone can easily diff the
 
 
 ##### 2. Bold the currently selected item in the move list.
+* We achieve this by simply toggling between a empty CSS class and a custom styled CSS class whenever a move is clicked.
 
+  ![alt text](task2.png "Output for task 2")
 
+* For this, we first need to add a new CSS class - ```bold``` which has it's ```font-weight``` property set as bold.
+```css
+.bold {
+  font-weight: bold;
+}
+```
+
+* Next, we create a ```formatClass``` variable which takes value 'bold' if the ```move``` value is equal to the current ```stepNumber```.
+```javascript
+render() {
+
+  const history = this.state.history;
+  const current = history[this.state.stepNumber];
+  const winner = calculateWinner(current.squares);
+
+  const moves = history.map( (step,move) => {
+      const desc = move ? 'Go to move #' + move + ' : ' + (step.picked%3+1) + ',' +  (Math.floor(step.picked/3)+1)
+                        : 'Go to game start' ;
+      const formatClass = (move == this.state.stepNumber ? 'bold' : '');  <--
+      return (
+        <li key={move}>
+          <button className={formatClass} onClick={ () => this.jumpTo(move, this.key) }>{desc}</button> <--
+        </li>
+      );
+  });
+```
 
 ##### 3.  Rewrite Board to use two loops to make the squares instead of hardcoding them.
 ##### 4. Add a toggle button that lets you sort the moves in either ascending or descending order.
