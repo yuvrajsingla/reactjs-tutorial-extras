@@ -288,7 +288,7 @@ render() {
     );
   }
 }
-  ```
+```
 
 * We are now in the `renderSquare` function of the `Board` class. Here, we use the `winnerCells` property to decide whether to append the `highlighted` class to a particular square or not.
 * We pass this information down to the `Square` function through the `extraClass` property.
