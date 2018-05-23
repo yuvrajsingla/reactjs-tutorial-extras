@@ -130,5 +130,94 @@ render() {
 
 
 ##### 4. Add a toggle button that lets you sort the moves in either ascending or descending order.
+
+* This one was a little tricky to figure out. I believe there are a number of ways to achieve this. I implemented what I think is the best solution - build the list of moves as before and reverse the sequence if the current selected order is descending.
+
+  ![alt text](task4.png "Output for task 4")
+
+* We first add a new property `movesAsc` to the constructor of the `Game` class. We initialize it to true.
+```javascript
+class Game extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      history: [{
+        squares: Array(9).fill(null),
+        picked: null,
+      }],
+      stepNumber: 0,
+      xIsNext: true,
+      movesAsc: true, <--
+    };
+  }
+```
+
+* Next, we update the render function of the Game class. Here we need to make the following 4 changes :
+ 1. Add a toggle button before the list of moves buttons.
+ 2. If the `movesAsc` in the current state is set to `false`, we reverse the order of the list of moves. _(for this, you need to change the moves variable type from const to let)_
+ 3. Based on the current `movesAsc` value, we change the text of the `toggleButton`.
+ 4. We register calling of function `toggleOrder()` through it's `onClick` property.
+
+ ```javascript
+render() {
+
+  const history = this.state.history;
+  const current = history[this.state.stepNumber];
+  const winner = calculateWinner(current.squares);
+
+  let moves = history.map( (step,move) => {
+      const desc = move ? 'Go to move #' + move + ' : ' + (step.picked%3+1) + ',' +  (Math.floor(step.picked/3)+1)
+                        : 'Go to game start' ;
+      const formatClass = (move == this.state.stepNumber ? 'bold' : '');
+      return (
+        <li key={move}>
+          <button className={formatClass} onClick={ () => this.jumpTo(move, this.key) }>{desc}</button>
+        </li>
+      );
+  });
+  if (this.state.movesAsc === false) {    <--
+    moves = moves.reverse();              <--
+  }                                       <--
+
+  let status;
+  if (winner) {
+    status = 'Winner: ' + winner;
+  }
+  else {
+    status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O') ;
+  }
+
+  const oppOrder = this.state.movesAsc ? 'descending' : 'ascending';                                          <--
+  let toggleButton = <button onClick={ () => this.toggleOrder() }>Toggle moves order to {oppOrder}</button>   <--
+
+  return (
+    <div className="game">
+      <div className="game-board">
+        <Board
+          squares={current.squares}
+          onClick={ (i) => this.handleClick(i) }
+        />
+      </div>
+      <div className="game-info">
+        <div>{status}</div>
+        <div>{toggleButton}</div>   <--
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
+}
+}
+```
+
+* Next, we define the `onToggle()` funciton which simply updates the current state by toggling the boolean `movesAsc`.
+
+  ```javascript
+  toggleOrder() {
+    this.setState({ movesAsc: !this.state.movesAsc,
+                  });
+  }
+```
+
 ##### 5. When someone wins, highlight the three squares that caused the win.
 ##### 6. When no one wins, display a message about the result being a draw.
