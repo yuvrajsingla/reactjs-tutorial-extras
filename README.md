@@ -158,12 +158,12 @@ class Game extends React.Component {
 ```
 
 * Next, we update the render function of the Game class. Here we need to make the following 4 changes :
- 1. Add a toggle button before the list of moves buttons.
- 2. If the `movesAsc` in the current state is set to `false`, we reverse the order of the list of moves. _(for this, you need to change the moves variable type from const to let)_
- 3. Based on the current `movesAsc` value, we change the text of the `toggleButton`.
- 4. We register calling of function `toggleOrder()` through it's `onClick` property.
+   1. Add a toggle button before the list of moves buttons.
+   2. If the `movesAsc` in the current state is set to `false`, we reverse the order of the list of moves. _(for this, you need to change the moves variable type from const to let)_
+   3. Based on the current `movesAsc` value, we change the text of the `toggleButton`.
+   4. We register calling of function `toggleOrder()` through it's `onClick` property.
 
- ```javascript
+```javascript
 render() {
 
   const history = this.state.history;
@@ -215,10 +215,11 @@ render() {
 ```
 
 * Next, we define the `onToggle()` funciton which simply updates the current state by toggling the boolean `movesAsc`.
-  ```javascript
-  toggleOrder() {
-    this.setState({ movesAsc: !this.state.movesAsc, });
-  }
+
+```javascript
+toggleOrder() {
+  this.setState({ movesAsc: !this.state.movesAsc, });
+}
 ```
 
 ---
@@ -230,7 +231,7 @@ render() {
   ![alt text](task5.png "Output for task 5")
 
 * We first add a new class `highlighted` to the index.css file
-  ```CSS
+```CSS
 .highlighted {
   font-weight: bold;
   color: red;
@@ -238,7 +239,7 @@ render() {
 ```
 
 * Next, we update the `calculateWinner()` function to return the indices of the three squares that cause the win when someone wins.
-  ```javascript
+```javascript
   function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -262,7 +263,7 @@ render() {
 ```
 
 * We now modify the `render` function of the `Game` class to pass the WinnerCells information down to the `Board` class.
-  ```javascript
+```javascript
   render() {
 
     const history = this.state.history;
@@ -295,7 +296,7 @@ render() {
 
 * We are now in the `renderSquare` function of the `Board` class. Here, we use the `winnerCells` property to decide whether to append the `highlighted` class to a particular square or not.
 * We pass this information down to the `Square` function through the `extraClass` property.
-  ```javascript
+```javascript
   class Board extends React.Component {
 
     renderSquare(i) {
@@ -313,7 +314,7 @@ render() {
 ```
 
 * Lastly, we use this `extraClass` property inside the `Square` function inside the className property.
-  ```javascript
+```javascript
 
   function Square(props) {
     return (
