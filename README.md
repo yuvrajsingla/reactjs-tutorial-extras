@@ -1,13 +1,13 @@
-This project follows the Tic Tac Toe tutorial at the [Reactjs website](https://reactjs.org/tutorial/tutorial.html).
+This project is extension of the Tic Tac Toe tutorial at the [ReactJS website](https://reactjs.org/tutorial/tutorial.html).
 
-Much of the code for the tutorial is similar to as seen on the above webpage with few formatting mismatches.
+On the webpage, they have listed a number of suggested improvements to the Tic Tac Toe at the end of the tutorial. Here I share my solutions to those tasks. Much of the starter code for the tutorial is similar to as seen on the above webpage with few formatting mismatches.
 
-Here I share my solutions to the suggested improvements to the Tic Tac Toe at the end of the tutorial.
+I have tried to have each commit with format 'Completed task X' to correspond to each task in order so that anyone can easily diff the specific changes for a particular task.
 
-Each commit corresponds to each task in order so that anyone can easily diff the specific changes for a particular task.
+I would love to have a discussion if you see any bugs or have a more optimized approach to any of the tasks.
 
 
-## Extras
+## Tasks
 
 ##### 1. Display the location for each move in the format (col, row) in the move history list.
 
