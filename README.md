@@ -103,6 +103,32 @@ render() {
 ```
 
 ##### 3.  Rewrite Board to use two loops to make the squares instead of hardcoding them.
+
+* To make the squares dynamically, we first create individual squares for each row and store them in an array.
+* An outer loop is used to pack each row inside a div with class `board-row`.
+
+* All changes are restricted to inside of the render function of the `Board` class
+```javascript
+render() {
+
+  let allSquares = []
+  for (var row_n = 0; row_n < 3; row_n++) {
+    let rowSquares = []
+    for (var col_n = 0; col_n < 3; col_n++) {
+      rowSquares.push( this.renderSquare(row_n*3+col_n) );
+    }
+    allSquares.push(<div className="board-row">{rowSquares}</div>);
+  }
+
+  return (
+    <div>
+      {allSquares}
+    </div>
+  );
+}
+```
+
+
 ##### 4. Add a toggle button that lets you sort the moves in either ascending or descending order.
 ##### 5. When someone wins, highlight the three squares that caused the win.
 ##### 6. When no one wins, display a message about the result being a draw.
